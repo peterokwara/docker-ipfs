@@ -30,6 +30,8 @@ else
   ipfs bootstrap rm --all
 fi
 
+ ipfs config show | grep "PeerID"
+
 if [ ! -z $SWARM_PEER ]; then ipfs bootstrap add $SWARM_PEER; fi
 
 # if the first argument is daemon
