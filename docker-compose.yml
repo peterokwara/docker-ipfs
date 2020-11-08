@@ -28,10 +28,7 @@ services:
       - ipfs_node:/data/ipfs
       - ./private-network/.ipfs/swarm.key:/data/ipfs/swarm.key
       - ./private-network/init.sh:/usr/local/bin/start_ipfs
-    expose:
-      - "4001"
-      - "8080"
-      - "5001"
+
 volumes:
   bootstrap_node:
   ipfs_node:
