@@ -7,13 +7,15 @@ services:
       context: private-network
     environment:
       LIBP2P_FORCE_PNET: "1"
-      # SWARM_KEY: "/key/swarm/psk/1.0.0/\n/base16/\ne0e7b1394fb6e928eecf2f8db77eaa99d3657684dc939519f285cb902bd93e22"
+      SWARM_PEER:
     volumes:
       - bootstrap_node:/data/ipfs
       - ./private-network/.ipfs/swarm.key:/data/ipfs/swarm.key
       - ./private-network/init.sh:/usr/local/bin/start_ipfs
     ports:
-      - 8080
+      - "4001:4002"
+      - "127.0.0.1:8080:8081"
+      - "127.0.0.1:5001:5002"
 
   ipfs_node:
     hostname: ipfs_node
@@ -21,7 +23,6 @@ services:
       context: private-network
     environment:
       LIBP2P_FORCE_PNET: "1"
-      # SWARM_KEY: "/key/swarm/psk/1.0.0/\n/base16/\ne0e7b1394fb6e928eecf2f8db77eaa99d3657684dc939519f285cb902bd93e22"
       SWARM_PEER:
     volumes:
       - ipfs_node:/data/ipfs
