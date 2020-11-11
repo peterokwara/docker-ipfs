@@ -1,7 +1,9 @@
 version: "3"
+networks:
+  ipfs-network:
+    name: ipfs-network
 services:
   bootstrap_node:
-    #image: ipfs/go-ipfs:latest
     hostname: bootstrap_node
     build:
       context: private-network
@@ -16,6 +18,8 @@ services:
       - "4002:4001"
       - "8081:8080"
       - "5002:5001"
+    networks:
+      - ipfs-network
 
   ipfs_node:
     hostname: ipfs_node
@@ -28,6 +32,8 @@ services:
       - ipfs_node:/data/ipfs
       - ./private-network/.ipfs/swarm.key:/data/ipfs/swarm.key
       - ./private-network/init.sh:/usr/local/bin/start_ipfs
+    networks:
+      - ipfs-network
 
 volumes:
   bootstrap_node:
