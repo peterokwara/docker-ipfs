@@ -5,8 +5,11 @@ command="$1"
 # Start ipfs bootstrap node
 startBootstrap () {
 
-    #swarm key
+    # swarm key
     swarmKey
+
+    # init.sh executable
+    chmod +x private-network/init.sh
 
     # Run the bootstrap ipfs node
     docker-compose --log-level ERROR up -d bootstrap_node
@@ -15,6 +18,9 @@ startBootstrap () {
 
 # Start ipfs node
 startIpfs () {
+
+    # init.sh executable
+    chmod +x private-network/init.sh
 
     # Run an ipfs node
     docker-compose --log-level ERROR up -d ipfs_node
