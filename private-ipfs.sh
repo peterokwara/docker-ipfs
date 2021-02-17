@@ -36,8 +36,12 @@ startBootstrap () {
     chmod +x private-network/init.sh
 
     # Run the bootstrap ipfs node
-    docker-compose --log-level ERROR up bootstrap_node >> $BOOTSTRAP_LOG_FILE
+    docker-compose run -d --rm bootstrap_node > ipfs.bootstrap.container
 
+    # Number of seconds waited for each tick (proportional to the depth of the Merkle Tree)
+    echo "Waiting for 15 seconds ... ⏳"
+    sleep 15
+    docker logs $(cat ./ipfs.bootstrap.container) | grep "PeerID" > peerId
 }
 
 # Start ipfs node
