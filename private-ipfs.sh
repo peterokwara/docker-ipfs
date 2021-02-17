@@ -5,7 +5,12 @@ command="$1"
 # Start ipfs bootstrap node
 startBootstrap () {
 
-    # swarm key
+    stopContainers
+
+    clean
+
+    volumeSetup
+
     swarmKey
 
     # init.sh executable
@@ -43,7 +48,7 @@ stopContainers () {
 
 # Show help
 help () {
-  echo "usage: private-ipfs.sh [startBoostrap|startIpfs]"
+  echo "usage: private-ipfs.sh [start-bootstrap|start-ipfs|stop]"
 }
 
 
@@ -67,3 +72,15 @@ case "${command}" in
     exit 127;
     ;;
 esac
+
+# Remove the swarm.key file
+clean () {
+    if [ -f ./private-network/.ipfs/swarm.key ]; then
+        sudo rm ./private-network/.ipfs/swarm.key
+    fi
+}
+
+# Create missing directory
+volumeSetup () {
+    mkdir private-tangle/.ipfs/
+}
