@@ -36,7 +36,7 @@ startBootstrap () {
     chmod +x private-network/init.sh
 
     # Run the bootstrap ipfs node
-    docker-compose --log-level ERROR up -d bootstrap_node >> $BOOTSTRAP_LOG_FILE
+    docker-compose --log-level ERROR up bootstrap_node >> $BOOTSTRAP_LOG_FILE
 
 }
 
