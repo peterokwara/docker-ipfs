@@ -11,7 +11,7 @@ clean () {
 
 # Create missing directory
 volumeSetup () {
-    mkdir private-tangle/.ipfs/
+    mkdir private-network/.ipfs/
 }
 
 # Start ipfs bootstrap node
