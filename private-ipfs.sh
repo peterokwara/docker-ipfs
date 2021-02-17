@@ -10,9 +10,9 @@ clean () {
         sudo rm ./private-network/.ipfs/swarm.key
     fi
 
-    if [ -f ./private-network/logs/bootstrap_logs.log ]; then
-        sudo rm ./private-network/logs/bootstrap_logs.log
-    fi
+    if [ -f ./ipfs.bootstrap.container ]; then
+        sudo rm ./ipfs.bootstrap.container
+    fi   
 }
 
 # Create missing directory
