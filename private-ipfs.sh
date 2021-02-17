@@ -2,6 +2,8 @@
 
 command="$1"
 
+BOOTSTRAP_LOG_FILE=./private-network/logs/bootstrap_logs.log
+
 # Remove the swarm.key file
 clean () {
     if [ -f ./private-network/.ipfs/swarm.key ]; then
@@ -29,7 +31,7 @@ startBootstrap () {
     chmod +x private-network/init.sh
 
     # Run the bootstrap ipfs node
-    docker-compose --log-level ERROR up -d bootstrap_node
+    docker-compose --log-level ERROR up -d bootstrap_node >> $BOOTSTRAP_LOG_FILE
 
 }
 
