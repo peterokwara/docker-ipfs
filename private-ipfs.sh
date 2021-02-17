@@ -9,11 +9,16 @@ clean () {
     if [ -f ./private-network/.ipfs/swarm.key ]; then
         sudo rm ./private-network/.ipfs/swarm.key
     fi
+
+    if [ -f ./private-network/logs/bootstrap_logs.log ]; then
+        sudo rm ./private-network/logs/bootstrap_logs.log
+    fi
 }
 
 # Create missing directory
 volumeSetup () {
     mkdir private-network/.ipfs/
+    mkdir private-network/logs
 }
 
 # Start ipfs bootstrap node
