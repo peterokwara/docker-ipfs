@@ -2,6 +2,18 @@
 
 command="$1"
 
+# Remove the swarm.key file
+clean () {
+    if [ -f ./private-network/.ipfs/swarm.key ]; then
+        sudo rm ./private-network/.ipfs/swarm.key
+    fi
+}
+
+# Create missing directory
+volumeSetup () {
+    mkdir private-tangle/.ipfs/
+}
+
 # Start ipfs bootstrap node
 startBootstrap () {
 
@@ -73,14 +85,3 @@ case "${command}" in
     ;;
 esac
 
-# Remove the swarm.key file
-clean () {
-    if [ -f ./private-network/.ipfs/swarm.key ]; then
-        sudo rm ./private-network/.ipfs/swarm.key
-    fi
-}
-
-# Create missing directory
-volumeSetup () {
-    mkdir private-tangle/.ipfs/
-}
