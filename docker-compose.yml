@@ -1,12 +1,10 @@
 version: "3"
-networks:
-  ipfs:
-    name: private-ipfs
 
 services:
   bootstrap_node:
     #image: ipfs/go-ipfs:latest
     hostname: bootstrap_node
+    network_mode: host
     build:
       context: private-network
     environment:
@@ -22,11 +20,10 @@ services:
       - "5001:5001"
     expose:
       - 5001
-    networks:
-      - ipfs
 
   ipfs_node:
     hostname: ipfs_node
+    network_mode: host
     build:
       context: private-network
     environment:
@@ -36,8 +33,6 @@ services:
       - ipfs_node:/data/ipfs
       - ./private-network/.ipfs/swarm.key:/data/ipfs/swarm.key
       - ./private-network/init.sh:/usr/local/bin/start_ipfs
-    networks:
-      - ipfs
 
 volumes:
   bootstrap_node:
