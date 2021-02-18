@@ -1,7 +1,8 @@
 version: "3"
 networks:
-  tangle:
-    name: private-tangle
+  ipfs:
+    name: private-ipfs
+
 services:
   bootstrap_node:
     #image: ipfs/go-ipfs:latest
@@ -22,7 +23,7 @@ services:
     expose:
       - 5001
     networks:
-      - tangle
+      - ipfs
 
   ipfs_node:
     hostname: ipfs_node
@@ -36,7 +37,7 @@ services:
       - ./private-network/.ipfs/swarm.key:/data/ipfs/swarm.key
       - ./private-network/init.sh:/usr/local/bin/start_ipfs
     networks:
-      - tangle
+      - ipfs
 
 volumes:
   bootstrap_node:
