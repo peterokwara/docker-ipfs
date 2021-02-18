@@ -1,11 +1,13 @@
 version: "3"
 networks:
-  ipfs:
-    name: private-ipfs
+  tangle:
+    name: private-tangle
 services:
   bootstrap_node:
-    image: ipfs/go-ipfs:latest
+    #image: ipfs/go-ipfs:latest
     hostname: bootstrap_node
+    build:
+      context: private-network
     environment:
       LIBP2P_FORCE_PNET: "1"
       SWARM_PEER:
@@ -14,17 +16,18 @@ services:
       - ./private-network/.ipfs/swarm.key:/data/ipfs/swarm.key
       - ./private-network/init.sh:/usr/local/bin/start_ipfs
     ports:
-      - "4001:4001"
-      - "8080:8080"
+      - "4002:4001"
+      - "8083:8080"
       - "5001:5001"
     expose:
       - 5001
     networks:
-      - ipfs
+      - tangle
 
   ipfs_node:
     hostname: ipfs_node
-    image: ipfs/go-ipfs:latest
+    build:
+      context: private-network
     environment:
       LIBP2P_FORCE_PNET: "1"
       SWARM_PEER:
@@ -32,14 +35,8 @@ services:
       - ipfs_node:/data/ipfs
       - ./private-network/.ipfs/swarm.key:/data/ipfs/swarm.key
       - ./private-network/init.sh:/usr/local/bin/start_ipfs
-    ports:
-      - "4001:4001"
-      - "8080:8080"
-      - "5001:5001"
-    expose:
-      - 5001
     networks:
-      - ipfs
+      - tangle
 
 volumes:
   bootstrap_node:
