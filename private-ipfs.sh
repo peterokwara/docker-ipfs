@@ -13,6 +13,18 @@ clean () {
     if [ -f ./ipfs.bootstrap.container ]; then
         sudo rm ./ipfs.bootstrap.container
     fi   
+
+    if [ -f ./ipfs.node.container ]; then
+        sudo rm ./ipfs.node.container
+    fi  
+
+    if [ -f ./peerIdBootstrapNode ]; then
+        sudo rm ./peerIdBootstrapNode
+    fi  
+
+    if [ -f ./peerIdIpfsNode ]; then
+        sudo rm ./peerIdIpfsNode
+    fi  
 }
 
 # Create missing directory
