@@ -1,42 +1,66 @@
 # docker-ipfs
-This is a collection of files and configuration for playing with IPFS
-in Docker. Most of the experimentation will be focused on private networks and
-clustering.
 
-## Starting points
-### Resources
-Good explanation for the role of private networks vs clustering
-<pre>They are separate features/functionality.
-
-* With private networks each node specifies which other nodes it will connect to. Nodes in that network don't respond to communications from nodes outside that network.
-* With ipfs-cluster you use a leader-based consensus algorithm to coordinate storage of a pinset -- distributing the set of data across the participating nodes based on whichever pattern you prefer
-
-You could use these features together -- using ipfs-cluster to spread a pinset across a private network of nodes -- but they are completely separate features. They do not rely on each other. Support for private networks is functionality implemented within the core (go-ipfs) code base. ipfs-cluster is its own separate code base.
-</pre>
-
--- **flyingzumwalt**
-
-https://discuss.ipfs.io/t/how-to-create-a-private-network-of-ipfs/339/7
-
-#### Clustering
-* https://github.com/ipfs/ipfs-cluster/blob/master/docs/ipfs-cluster-guide.md
-* https://discuss.ipfs.io/t/solved-need-help-to-setup-a-new-ipfs-cluster-with-2-peers/835
-
-### Private networks
-* https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
+This is a collection of files and configuration for setting up a private IPFS network.
 
 ## Private network setup
-### Generate a swarm key
-If you don't have the `ipfs-swarm-key-gen` binary locally, you can use Docker to
-to fetch the dependency and generate a swarm key by running the following:
-```bash
-$ docker run --rm golang:1.9 sh -c 'go get github.com/Kubuxu/go-ipfs-swarm-key-gen/ipfs-swarm-key-gen && ipfs-swarm-key-gen'
-/key/swarm/psk/1.0.0/
-/base16/
-f744ccf21ef090407977a33e01deb0a0c6a3397ae0366ff6f3c749e200f2510d
+
+The following are steps for setting up a Private IPFS Network
+
+### Run the bootstrap
+
+To run the bootstrap, simply make the private-ipfs.sh file executable by running
+
+```
+chmod +x private-ipfs.sh
 ```
 
-### Simple way to run a private network
-```bash
-docker run --rm -e LIBP2P_FORCE_PNET=1 -e SWARM_KEY="/key/swarm/psk/1.0.0/\n/base16/\ne0e7b1394fb6e928eecf2f8db77eaa99d3657684dc939519f285cb902bd93e22" -v ./private-network/init.sh:/usr/local/bin/start_ipfs ipfs/go-ipfs:latest
+Once that is done, you can now run the bootstrap by running
+
 ```
+./private-ipfs.sh start-bootstrap
+```
+
+## Add a node to the private IPFS Network
+
+To run the ipfs node, ensure the private-ipfs.sh file is executable.
+
+Copy over the swarm key generated from the bootstrap node in the directory /private-network/.ipfs/ to the same directory of your new node.
+
+You can then run an ipfs node by running.
+
+```
+./private-ipfs.sh start-ipfs
+```
+
+To add an additional node to the bootstrap node, run the following commmand. Ensure you replace the:
+
+- IP Address with the IP Address of the bootstrap node
+- IP Address Peer with the IP Address of the peer that you want to join the private ipfs network
+- The peerId with the peerId of the node you want to add. It should be the same as the value in the peerIdIpfsNode located in the docker-ipfs/ folder
+
+```
+curl -X POST "http://(IP Address):5001/api/v0/bootstrap/add?arg=/ip4/(IP Address Peer)/tcp/4001/p2p/(peerId)"
+```
+
+To add the bootstrap node to the current node you are currently running, run the following command. Ensure you replace the:
+
+- IP Address with the IP Address of the current IPFS node you are running
+- IP Address Peer with the IP Address of the bootstrap node
+- The peerId with the peerId of the bootstrap node you want to add. It should be the same as the value in the peerIdBootstrapNode located in the docker-ipfs/ folder
+
+```
+curl -X POST "http://(IP Address of your ipfs node ):5001/api/v0/bootstrap/add?arg=/ip4/(IP Address of the bootstrap node)/tcp/4001/p2p/(peerId of the bootstrap node)"
+```
+
+## References
+
+Good explanation for the role of private networks. With private networks each node specifies which other nodes it will connect to. Nodes in that network don't respond to communications from nodes outside that network.
+
+**flyingzumwalt**
+https://discuss.ipfs.io/t/how-to-create-a-private-network-of-ipfs/339/7
+
+**Private networks**
+https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
+
+**IPFS HTTP API**
+https://docs.ipfs.io/reference/http/api/
