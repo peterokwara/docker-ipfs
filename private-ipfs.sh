@@ -18,12 +18,12 @@ clean () {
         sudo rm ./ipfs.node.container
     fi  
 
-    if [ -f ./peerIdBootstrapNode ]; then
-        sudo rm ./peerIdBootstrapNode
+    if [ -f ./peer-id-bootstrap-node ]; then
+        sudo rm ./peer-id-bootstrap-node
     fi  
 
-    if [ -f ./peerIdIpfsNode ]; then
-        sudo rm ./peerIdIpfsNode
+    if [ -f ./peer-id-ipfs-node ]; then
+        sudo rm ./peer-id-ipfs-node
     fi  
 }
 
@@ -53,7 +53,7 @@ startBootstrap () {
     # Number of seconds to wait
     echo "Waiting for 15 seconds ... ⏳"
     sleep 15
-    docker logs $(cat ./ipfs.bootstrap.container) | grep "PeerID" > peerIdBootstrapNode
+    docker logs $(cat ./ipfs.bootstrap.container) | grep "PeerID" > peer-id-bootstrap-node
 }
 
 # Start ipfs node
@@ -68,7 +68,7 @@ startIpfs () {
     # Number of seconds to wait
     echo "Waiting for 15 seconds ... ⏳"
     sleep 15
-    docker logs $(cat ./ipfs.node.container) | grep "PeerID" > peerIdIpfsNode
+    docker logs $(cat ./ipfs.node.container) | grep "PeerID" > peer-id-ipfs-node
 
 }
 
